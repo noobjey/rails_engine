@@ -56,4 +56,14 @@ namespace :rails_engine do
       Transaction.create!(row.to_hash)
     end
   end
+
+  desc "Load All Data"
+  task load_all: :environment do
+    Rake::Task["rails_engine:load_customer"].invoke
+    Rake::Task["rails_engine:load_merchant"].invoke
+    Rake::Task["rails_engine:load_item"].invoke
+    Rake::Task["rails_engine:load_invoice"].invoke
+    Rake::Task["rails_engine:load_invoice_item"].invoke
+    Rake::Task["rails_engine:load_transaction"].invoke
+  end
 end
