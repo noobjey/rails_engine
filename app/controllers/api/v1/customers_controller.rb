@@ -20,6 +20,14 @@ class Api::V1::CustomersController < ApplicationController
     respond_with Customer.all.sample(1)
   end
 
+  def invoices
+    respond_with Customer.find(params[:id]).invoices
+  end
+
+  def transactions
+    respond_with Transaction.joins(:invoice).where(["customer_id = ?", params[:id] ] )
+  end
+
   private
 
   def filter_params
