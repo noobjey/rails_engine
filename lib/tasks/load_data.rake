@@ -47,4 +47,13 @@ namespace :rails_engine do
       Merchant.create!(row.to_hash)
     end
   end
+
+  desc "Load Transaction Data"
+  task load_transaction: :environment do
+    file_location = "#{Rails.root}/db/data/transactions.csv"
+
+    CSV.foreach(file_location, headers: true, header_converters: :symbol) do |row|
+      Transaction.create!(row.to_hash)
+    end
+  end
 end
