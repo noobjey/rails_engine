@@ -29,7 +29,6 @@ namespace :rails_engine do
     end
   end
 
-
   desc "Load Item Data"
   task load_item: :environment do
     file_location = "#{Rails.root}/db/data/items.csv"
@@ -37,6 +36,15 @@ namespace :rails_engine do
     CSV.foreach(file_location, headers: true, header_converters: :symbol) do |row|
       row[:unit_price] = row[:unit_price].insert(-3, '.').to_d
       Item.create!(row.to_hash)
+    end
+  end
+
+  desc "Load Merchant Data"
+  task load_merchant: :environment do
+    file_location = "#{Rails.root}/db/data/merchants.csv"
+
+    CSV.foreach(file_location, headers: true, header_converters: :symbol) do |row|
+      Merchant.create!(row.to_hash)
     end
   end
 end
