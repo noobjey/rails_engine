@@ -4,4 +4,6 @@ class Invoice < ActiveRecord::Base
   has_one :transact, foreign_key: "invoice_id", class_name: "Transaction"
   has_many :invoice_items
   has_many :items, through: :invoice_items
+
+  include Findable
 end
