@@ -1,9 +1,16 @@
 class Customer < ActiveRecord::Base
-  include Filterable
-
-  scope :first_name, -> (first_name) { where first_name: first_name }
-  scope :last_name, -> (last_name) { where last_name: last_name }
-  scope :id, -> (id) { where id: id }
-
   has_many :invoices
+
+  def self.insensitive_find_by(attribute)
+    result = self.where(nil)
+    attribute.each do |key, value|
+      if value.is_a?(String)
+        result = self.where("lower(#{key}) = ?", value.downcase)
+      else
+        result = self.where("#{key} = ?", value)
+      end
+    end
+    result
+  end
+
 end
