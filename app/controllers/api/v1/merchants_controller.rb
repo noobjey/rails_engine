@@ -42,6 +42,10 @@ class Api::V1::MerchantsController < Api::V1::BaseController
     respond_with result
   end
 
+  def favorite_customer
+    respond_with Merchant.find(allowed_params[:id]).customers.joins(:transactions).where(transactions: {result: 'success'}).group('customers.id').order('count(customers.id) DESC').first
+  end
+
 
 # GET /api/v1/merchants/:id/revenue returns the total revenue for that merchant across all transactions
 # GET /api/v1/merchants/:id/revenue?date=x returns the total revenue for that merchant for a specific invoice date x
