@@ -70,6 +70,17 @@ Rails.application.routes.draw do
         end
       end
 
+      resources :transactions, only: [:index, :show], defaults: { format: :json } do
+        collection do
+          get :find
+          get :find_all
+          get :random
+        end
+
+        member do
+          get :invoice
+        end
+      end
     end
   end
 end
