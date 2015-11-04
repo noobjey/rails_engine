@@ -38,7 +38,7 @@ RSpec.describe Api::V1::TransactionsController, type: :controller do
     end
 
     it '#find by attribute' do
-      get :find, status: transaction.result, format: :json
+      get :find, result: transaction.result, format: :json
 
       expect(response.status).to eq(200)
       expect(parsed_response[:result]).to eq(transaction.result)
