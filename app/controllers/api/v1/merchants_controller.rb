@@ -31,6 +31,6 @@ class Api::V1::MerchantsController < Api::V1::BaseController
   private
 
   def allowed_params
-    params.permit(:id, :name)
+    params.permit(:id, :name, :created_at, :updated_at)
   end
 end
