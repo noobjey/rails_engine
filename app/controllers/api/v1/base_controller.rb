@@ -9,7 +9,9 @@ class Api::V1::BaseController < ApplicationController
   end
 
   def find(the_model)
-    respond_with the_model.insensitive_find_by(allowed_params).first
+    result = the_model.insensitive_find_by(allowed_params)
+
+    respond_with result.nil? ? result : result.first
   end
 
   def find_all(the_model)
@@ -17,6 +19,8 @@ class Api::V1::BaseController < ApplicationController
   end
 
   def random(the_model)
-    respond_with the_model.all.sample(1).first
+    result = the_model.all.sample(1)
+
+    respond_with result.nil? ? result : result.first
   end
 end

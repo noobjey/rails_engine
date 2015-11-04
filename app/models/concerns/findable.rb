@@ -3,7 +3,7 @@ module Findable
 
   module ClassMethods
     def insensitive_find_by(attribute)
-      result = self.where(nil)
+      result = nil
       attribute.each do |key, value|
         result = not_an_id?(value) ? self.where("lower(#{key}) = ?", value.downcase) : self.where("#{key} = ?", value)
       end
