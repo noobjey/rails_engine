@@ -1,6 +1,8 @@
 require 'rails_helper'
+require 'support/parser_helper'
 
 RSpec.describe Api::V1::CustomersController, type: :controller do
+  include ParserHelper
 
   describe 'Customer Api:' do
 
@@ -12,10 +14,6 @@ RSpec.describe Api::V1::CustomersController, type: :controller do
     let!(:transaction2) { Transaction.create(invoice_id: invoice2.id) }
     let!(:other_customer) { Customer.create({ first_name: 'Someone', last_name: 'Else' }) }
     let!(:same_name_customer) { Customer.create({ first_name: customer.first_name, last_name: 'Different' }) }
-
-    def parsed_response
-      JSON.parse(response.body, symbolize_names: true)
-    end
 
     it '#index' do
       get :index, format: :json
