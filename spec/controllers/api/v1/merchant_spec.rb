@@ -7,6 +7,10 @@ RSpec.describe Api::V1::MerchantsController, type: :controller do
   describe "Merchant Api" do
 
     let!(:merchant) { Merchant.create(name: 'The Merchant') }
+    let!(:invoice1) { Invoice.create(merchant_id: merchant.id) }
+    let!(:invoice2) { Invoice.create(merchant_id: merchant.id) }
+    let!(:item1) { Item.create(merchant_id: merchant.id) }
+    let!(:item2) { Item.create(merchant_id: merchant.id) }
     let!(:merchant2) { Merchant.create(name: 'The Merchant 2') }
     let!(:same_name_merchant) { Merchant.create(name: 'The Merchant') }
 
@@ -60,5 +64,22 @@ RSpec.describe Api::V1::MerchantsController, type: :controller do
       expect(parsed_response[:id]).to be_in(valid_ids)
     end
 
+    it '#invoice' do
+      get :invoices, id: merchant.id, format: :json
+
+      expect(response.status).to eq(200)
+      expect(parsed_response.count).to eq(Invoice.count)
+      expect(parsed_response.first[:id]).to eq(invoice1.id)
+      expect(parsed_response.last[:id]).to eq(invoice2.id)
+    end
+
+    it '#items' do
+      get :items, id: merchant.id, format: :json
+
+      expect(response.status).to eq(200)
+      expect(parsed_response.count).to eq(Item.count)
+      expect(parsed_response.first[:id]).to eq(item1.id)
+      expect(parsed_response.last[:id]).to eq(item2.id)
+    end
   end
 end

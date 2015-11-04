@@ -20,6 +20,13 @@ class Api::V1::MerchantsController < Api::V1::BaseController
     super(Merchant)
   end
 
+  def invoices
+    respond_with Merchant.find(params[:id]).invoices
+  end
+
+  def items
+    respond_with Merchant.find(params[:id]).items
+  end
 
   private
 
