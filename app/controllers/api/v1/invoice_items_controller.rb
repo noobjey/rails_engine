@@ -20,7 +20,15 @@ class Api::V1::InvoiceItemsController < Api::V1::BaseController
     super(InvoiceItem)
   end
 
+  def invoice
+    respond_with InvoiceItem.find(params[:id]).invoice
+  end
 
+  def item
+    respond_with InvoiceItem.find(params[:id]).item
+  end
+
+  
   private
 
   def allowed_params

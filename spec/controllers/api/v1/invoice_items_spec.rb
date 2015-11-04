@@ -68,16 +68,19 @@ RSpec.describe Api::V1::InvoiceItemsController, type: :controller do
       expect(parsed_response[:id]).to be_in(valid_ids)
     end
 
+    it '#invoice' do
+      get :invoice, id: invoice_item.id, format: :json
 
-    # GET /api/v1/invoice_items/:id/invoice returns the associated invoice
-    # GET /api/v1/invoice_items/:id/item returns the associated item
-    # it '#merchant' do
-    #   get :merchant, id: invoice.id, format: :json
-    #
-    #   expect(response.status).to eq(200)
-    #   expect(parsed_response[:id]).to eq(merchant.id)
-    #   expect(parsed_response[:name]).to eq(merchant.name)
-    # end
+      expect(response.status).to eq(200)
+      expect(parsed_response[:id]).to eq(invoice1.id)
+    end
+
+    it '#invoice' do
+      get :item, id: invoice_item.id, format: :json
+
+      expect(response.status).to eq(200)
+      expect(parsed_response[:id]).to eq(item1.id)
+    end
   end
 end
 
