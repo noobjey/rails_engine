@@ -55,13 +55,6 @@ RSpec.describe Api::V1::CustomersController, type: :controller do
       expect(parsed_response[:id]).to eq(customer.id)
     end
 
-    it '#find by ignores case' do
-      get :find, last_name: customer.last_name.downcase, format: :json
-
-      expect(response.status).to eq(200)
-      expect(parsed_response[:id]).to eq(customer.id)
-    end
-
     it '#find_all' do
       same_first_name_count = Customer.where(first_name: same_name_customer.first_name).count
 
