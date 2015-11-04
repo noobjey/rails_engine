@@ -29,7 +29,15 @@ class Api::V1::MerchantsController < Api::V1::BaseController
   end
 
   def revenue
-    rev = Merchant.find(allowed_params[:id]).invoice_items.joins(:transactions).where(transactions: {result: 'success'}).sum('unit_price * quantity')
+
+    if allowed_params[:date]
+      d = allowed_params[:date].to_date
+      date_range = d.beginning_of_day..d.end_of_day
+      rev = Merchant.find(allowed_params[:id]).invoice_items.joins(:invoice).where(invoices: {created_at: date_range}).joins(:transactions).where(transactions: {result: 'success'}).sum('unit_price * quantity')
+    else
+      rev = Merchant.find(allowed_params[:id]).invoice_items.joins(:transactions).where(transactions: {result: 'success'}).sum('unit_price * quantity')
+    end
+
     result = {revenue: rev}
     respond_with result
   end
@@ -46,6 +54,6 @@ class Api::V1::MerchantsController < Api::V1::BaseController
   private
 
   def allowed_params
-    params.permit(:id, :name, :created_at, :updated_at)
+    params.permit(:id, :name, :created_at, :updated_at, :date)
   end
 end
