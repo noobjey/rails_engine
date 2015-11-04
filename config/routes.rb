@@ -14,6 +14,19 @@ Rails.application.routes.draw do
           get :favorite_merchant
         end
       end
+
+      resources :merchants, only: [:index, :show], defaults: { format: :json } do
+        collection do
+          get :find
+          get :find_all
+          get :random
+        end
+
+        member do
+          get :invoices
+          get :items
+        end
+      end
     end
   end
 end
