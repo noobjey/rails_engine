@@ -4,11 +4,7 @@ class Customer < ActiveRecord::Base
   def self.insensitive_find_by(attribute)
     result = self.where(nil)
     attribute.each do |key, value|
-      if value.is_a?(String)
-        result = self.where("lower(#{key}) = ?", value.downcase)
-      else
-        result = self.where("#{key} = ?", value)
-      end
+      result = value.is_a?(String) ? self.where("lower(#{key}) = ?", value.downcase) : self.where("#{key} = ?", value)
     end
     result
   end
