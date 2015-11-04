@@ -25,6 +25,7 @@ Rails.application.routes.draw do
         member do
           get :invoices
           get :items
+          get :revenue
         end
       end
 
