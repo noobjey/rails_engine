@@ -64,14 +64,12 @@ RSpec.describe Api::V1::TransactionsController, type: :controller do
       expect(parsed_response[:id]).to be_in(valid_ids)
     end
 
-    # GET /api/v1/transactions/:id/invoice returns the associated invoice
-    # it '#merchant' do
-    #   get :merchant, id: invoice.id, format: :json
-    #
-    #   expect(response.status).to eq(200)
-    #   expect(parsed_response[:id]).to eq(merchant.id)
-    #   expect(parsed_response[:name]).to eq(merchant.name)
-    # end
+    it '#merchant' do
+      get :invoice, id: transaction.id, format: :json
+
+      expect(response.status).to eq(200)
+      expect(parsed_response[:id]).to eq(invoice1.id)
+    end
 
   end
 end
