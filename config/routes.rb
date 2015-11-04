@@ -27,6 +27,19 @@ Rails.application.routes.draw do
           get :items
         end
       end
+
+      resources :items, only: [:index, :show], defaults: { format: :json } do
+        collection do
+          get :find
+          get :find_all
+          get :random
+        end
+
+        member do
+          get :invoice_items
+          get :merchant
+        end
+      end
     end
   end
 end
