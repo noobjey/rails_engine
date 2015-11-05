@@ -27,6 +27,7 @@ Rails.application.routes.draw do
           get :items
           get :revenue
           get :favorite_customer
+          get :customers_with_pending_invoices
         end
       end
 

@@ -46,14 +46,10 @@ class Api::V1::MerchantsController < Api::V1::BaseController
     respond_with Merchant.find(allowed_params[:id]).customers.joins(:transactions).where(transactions: {result: 'success'}).group('customers.id').order('count(customers.id) DESC').first
   end
 
+  def customers_with_pending_invoices
+    respond_with Merchant.find(allowed_params[:id]).invoices.joins(:transactions).where(transactions: {result: 'failed'}).joins(:customer).uniq
+  end
 
-# GET /api/v1/merchants/:id/revenue returns the total revenue for that merchant across all transactions
-# GET /api/v1/merchants/:id/revenue?date=x returns the total revenue for that merchant for a specific invoice date x
-# GET /api/v1/merchants/:id/favorite_customer returns the customer who has conducted the most successful transactions
-# GET /api/v1/merchants/:id/customers_with_pending_invoices returns a collection of customers which have pending (unpaid) invoices
-
-# NOTE: Failed charges should never be counted in revenue totals or statistics.
-# NOTE: All revenues should be reported as a float with two decimal places.
 
   private
 
