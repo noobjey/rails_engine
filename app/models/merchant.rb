@@ -6,4 +6,9 @@ class Merchant < ActiveRecord::Base
   has_many :transactions, through: :invoice_items
 
   include Findable
+
+  def revenue
+    self.invoice_items.successful.calculate_cost
+  end
+
 end
