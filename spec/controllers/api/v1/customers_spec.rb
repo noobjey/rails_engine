@@ -6,12 +6,14 @@ RSpec.describe Api::V1::CustomersController, type: :controller do
 
   describe 'Customer Api:' do
 
-    let!(:customer) { Customer.create!({ first_name: 'Happy', last_name: 'Gilmore' }) }
+    let!(:customer) { Customer.create({ first_name: 'Happy', last_name: 'Gilmore' }) }
     let!(:merchant) { Merchant.create(name: 'I am Merchant') }
-    let!(:invoice1) { Invoice.create(customer_id: customer.id, merchant_id: merchant, status: 'shipped') }
-    let!(:transaction1) { Transaction.create(invoice_id: invoice1.id) }
-    let!(:invoice2) { Invoice.create(customer_id: customer.id, merchant_id: merchant, status: 'shipped') }
-    let!(:transaction2) { Transaction.create(invoice_id: invoice2.id) }
+    let!(:invoice1) { Invoice.create(customer_id: customer.id, merchant_id: merchant.id, status: 'shipped') }
+    let!(:invoice2) { Invoice.create(customer_id: customer.id, merchant_id: merchant.id, status: 'shipped') }
+    let!(:invoice_item1) { InvoiceItem.create(invoice_id: invoice1.id) }
+    let!(:invoice_item2) { InvoiceItem.create(invoice_id: invoice2.id) }
+    let!(:transaction1) { Transaction.create(invoice_id: invoice1.id, result: 'success') }
+    let!(:transaction2) { Transaction.create(invoice_id: invoice2.id, result: 'success') }
     let!(:other_customer) { Customer.create({ first_name: 'Someone', last_name: 'Else' }) }
     let!(:same_name_customer) { Customer.create({ first_name: customer.first_name, last_name: 'Different' }) }
 
@@ -39,7 +41,7 @@ RSpec.describe Api::V1::CustomersController, type: :controller do
       expect(parsed_response[:id]).to eq(customer.id)
     end
 
-    it '#find by first name' do
+    it '#find by attribe' do
       get :find, first_name: customer.first_name, format: :json
 
       expect(response.status).to eq(200)
@@ -87,8 +89,15 @@ RSpec.describe Api::V1::CustomersController, type: :controller do
 
       expect(response.status).to eq(200)
       expect(parsed_response.count).to eq(transactions.count)
-
       expect(parsed_response.first[:id]).to be_in(transactions.pluck(:id))
+    end
+
+    it '#favorite_merchant' do
+      get :favorite_merchant, id: customer.id, format: :json
+
+      expect(response.status).to eq(200)
+      expect(parsed_response[:id]).to eq(merchant.id)
+      expect(parsed_response[:name]).to eq(merchant.name)
     end
   end
 end

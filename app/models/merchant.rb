@@ -31,4 +31,8 @@ class Merchant < ActiveRecord::Base
       .group('merchants.id')
       .order('total_revenue DESC').limit(top)
   end
+
+  def self.successful_transactions
+    joins(:transactions).where(transactions: { result: 'success' })
+  end
 end
