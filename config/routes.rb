@@ -20,11 +20,16 @@ Rails.application.routes.draw do
           get :find
           get :find_all
           get :random
+          get :revenue
+          get :most_revenue
         end
 
         member do
           get :invoices
           get :items
+          get :revenue
+          get :favorite_customer
+          get :customers_with_pending_invoices
         end
       end
 
