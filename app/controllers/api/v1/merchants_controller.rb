@@ -29,18 +29,14 @@ class Api::V1::MerchantsController < Api::V1::BaseController
   end
 
   def revenue
-
-    if allowed_params[:date] && allowed_params[:id]
-      result = { revenue: current_merchant.revenue_for_date(allowed_params[:date]) }
-    elsif allowed_params[:date]
-      result = { total_revenue: InvoiceItem.revenue_for_date(allowed_params[:date]) }
-    else
-      result = { revenue: current_merchant.revenue }
-    end
-
+    result = { revenue: current_merchant.revenue(params[:date]) }
     respond_with result
   end
 
+  def revenue_for_date
+    result = { total_revenue: InvoiceItem.revenue_for_date(allowed_params[:date]) }
+    respond_with result
+  end
 
   def favorite_customer
     respond_with current_merchant.customers.joins(:transactions).where(transactions: { result: 'success' }).group('customers.id').order('count(customers.id) DESC').first

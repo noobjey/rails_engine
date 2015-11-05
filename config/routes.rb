@@ -20,7 +20,7 @@ Rails.application.routes.draw do
           get :find
           get :find_all
           get :random
-          get :revenue
+          get :revenue, to: 'merchants#revenue_for_date'
           get :most_revenue
         end
 

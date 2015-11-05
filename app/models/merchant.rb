@@ -7,7 +7,9 @@ class Merchant < ActiveRecord::Base
 
   include Findable
 
-  def revenue
+  def revenue(date = nil)
+    return revenue_for_date(date) unless date.nil?
+
     self.invoice_items.successful.calculate_cost
   end
 
