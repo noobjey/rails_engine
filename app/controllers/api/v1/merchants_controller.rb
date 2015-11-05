@@ -43,7 +43,7 @@ class Api::V1::MerchantsController < Api::V1::BaseController
   end
 
   def customers_with_pending_invoices
-    respond_with current_merchant.invoices.joins(:transactions).where(transactions: { result: 'failed' }).joins(:customer).uniq
+    respond_with current_merchant.customers_with_pending_invoices
   end
 
   def most_revenue

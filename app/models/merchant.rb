@@ -21,6 +21,10 @@ class Merchant < ActiveRecord::Base
     self.customers.successful_transaction.group('customers.id').order('count(customers.id) DESC').first
   end
 
+  def customers_with_pending_invoices
+    self.invoices.pending.joins(:customer).uniq
+  end
+
   def self.highest_revenues(top ="1")
     Merchant.all.joins(:invoice_items).merge(InvoiceItem.successful)
       .select('merchants.*, sum(invoice_items.quantity * invoice_items.unit_price) as total_revenue')
