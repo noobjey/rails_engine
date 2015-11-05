@@ -47,10 +47,7 @@ class Api::V1::MerchantsController < Api::V1::BaseController
   end
 
   def most_revenue
-    merchant_total_revenue = InvoiceItem.all.joins(:invoice).joins(:transactions).where(transactions: { result: 'success' }).group('invoices.merchant_id').sum('unit_price * quantity')
-    merchant_ids           = merchant_total_revenue.sort_by { |k, v| v }.reverse.first(params[:quantity].to_i).map(&:first)
-    merchants              = merchant_ids.map { |id| Merchant.find(id) }
-    respond_with merchants
+    respond_with Merchant.highest_revenues(params[:quantity])
   end
 
 

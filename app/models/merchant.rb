@@ -20,4 +20,11 @@ class Merchant < ActiveRecord::Base
   def favorite_customer
     self.customers.successful_transaction.group('customers.id').order('count(customers.id) DESC').first
   end
+
+  def self.highest_revenues(top ="1")
+    Merchant.all.joins(:invoice_items).merge(InvoiceItem.successful)
+      .select('merchants.*, sum(invoice_items.quantity * invoice_items.unit_price) as total_revenue')
+      .group('merchants.id')
+      .order('total_revenue DESC').limit(top)
+  end
 end
