@@ -16,4 +16,8 @@ class Merchant < ActiveRecord::Base
   def revenue_for_date(date)
     self.invoice_items.revenue_for_date(date)
   end
+
+  def favorite_customer
+    self.customers.successful_transaction.group('customers.id').order('count(customers.id) DESC').first
+  end
 end

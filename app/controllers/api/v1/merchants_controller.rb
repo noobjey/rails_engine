@@ -39,7 +39,7 @@ class Api::V1::MerchantsController < Api::V1::BaseController
   end
 
   def favorite_customer
-    respond_with current_merchant.customers.joins(:transactions).where(transactions: { result: 'success' }).group('customers.id').order('count(customers.id) DESC').first
+    respond_with current_merchant.favorite_customer
   end
 
   def customers_with_pending_invoices
