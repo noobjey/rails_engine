@@ -30,17 +30,23 @@ class Api::V1::MerchantsController < Api::V1::BaseController
 
   def revenue
 
-    if allowed_params[:date]
+
+    if allowed_params[:date] && allowed_params[:id]
       d = allowed_params[:date].to_date
       date_range = d.beginning_of_day..d.end_of_day
       rev = Merchant.find(allowed_params[:id]).invoice_items.joins(:invoice).where(invoices: {created_at: date_range}).joins(:transactions).where(transactions: {result: 'success'}).sum('unit_price * quantity')
+      result = {revenue: rev}
+    elsif allowed_params[:date]
+      rev = InvoiceItem.joins(:invoice).where(invoices: {created_at: allowed_params[:date]}).joins(:transactions).where(transactions: {result: 'success'}).sum('unit_price * quantity')
+      result = {total_revenue: rev}
     else
       rev = Merchant.find(allowed_params[:id]).invoice_items.joins(:transactions).where(transactions: {result: 'success'}).sum('unit_price * quantity')
+      result = {revenue: rev}
     end
 
-    result = {revenue: rev}
     respond_with result
   end
+
 
   def favorite_customer
     respond_with Merchant.find(allowed_params[:id]).customers.joins(:transactions).where(transactions: {result: 'success'}).group('customers.id').order('count(customers.id) DESC').first
