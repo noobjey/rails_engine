@@ -6,4 +6,8 @@ class Invoice < ActiveRecord::Base
   has_many :items, through: :invoice_items
 
   include Findable
+
+  def self.pending
+    joins(:transactions).where(transactions: { result: 'failed' })
+  end
 end
