@@ -4,7 +4,7 @@ require 'support/parser_helper'
 RSpec.describe Api::V1::InvoicesController, type: :controller do
   include ParserHelper
 
-  describe 'Item Api:' do
+  describe 'Invoice Api:' do
 
     let!(:customer) { Customer.create!({ first_name: 'Happy', last_name: 'Gilmore' }) }
     let!(:merchant) { Merchant.create(name: 'I am Merchant') }
