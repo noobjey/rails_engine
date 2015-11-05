@@ -11,4 +11,7 @@ class Merchant < ActiveRecord::Base
     self.invoice_items.successful.calculate_cost
   end
 
+  def revenue_for_date(date)
+    self.invoice_items.revenue_for_date(date)
+  end
 end
