@@ -36,8 +36,6 @@ class Api::V1::MerchantsController < Api::V1::BaseController
       rev        = current_merchant.invoice_items.joins(:invoice).where(invoices: { created_at: date_range }).joins(:transactions).where(transactions: { result: 'success' }).sum('unit_price * quantity')
       result     = { revenue: rev }
     elsif allowed_params[:date]
-      # rev    = InvoiceItem.joins(:invoice).where(invoices: { created_at: allowed_params[:date] }).joins(:transactions).where(transactions: { result: 'success' }).sum('unit_price * quantity')
-      # result = { total_revenue: rev }
       result = { total_revenue: InvoiceItem.revenue_for_date(allowed_params[:date]) }
     else
       result = { revenue: current_merchant.revenue }

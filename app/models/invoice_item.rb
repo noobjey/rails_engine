@@ -14,6 +14,6 @@ class InvoiceItem < ActiveRecord::Base
   end
 
   def self.revenue_for_date(date)
-    all.joins(:invoice).where(invoices: { created_at: date}).successful.calculate_cost
+    joins(:invoice).where(invoices: { created_at: date}).successful.calculate_cost
   end
 end
