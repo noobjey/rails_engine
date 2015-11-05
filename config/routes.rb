@@ -21,6 +21,7 @@ Rails.application.routes.draw do
           get :find_all
           get :random
           get :revenue
+          get :most_revenue
         end
 
         member do
